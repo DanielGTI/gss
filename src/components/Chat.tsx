@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, User, Bot, Loader2, Box, Plus, Mic, AudioWaveform } from 'lucide-react';
+import { Send, User, Bot, Loader2, Box, Plus, Mic } from 'lucide-react';
 import { cn } from '../utils';
 import { Message } from '../types';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 interface ChatProps {
   messages: Message[];
@@ -19,6 +20,7 @@ export const Chat: React.FC<ChatProps> = ({ messages, onSendMessage, isTyping })
   const fileInputRef = useRef<HTMLInputElement>(null);
   const speechSessionRef = useRef(0);
   const resultCommittedRef = useRef(false);
+  const navigate = useNavigate();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -112,7 +114,7 @@ export const Chat: React.FC<ChatProps> = ({ messages, onSendMessage, isTyping })
     { text: "Gerar 10 questões", subtext: "ENADE sobre sustentabilidade..." },
     { text: "Transformar", subtext: "este PDF em um simulado ENADE ..." },
     { text: "Criar 5 questões", subtext: "discursivas curtas para Pedagogia -..." },
-    { text: "Montar uma", subtext: "prova ENADE fiel + didática de..." },
+    { text: "Dashboard", subtext: "Conheça os novos indicadores", route: "/dashboard" as const },
   ];
 
   return (
@@ -121,24 +123,43 @@ export const Chat: React.FC<ChatProps> = ({ messages, onSendMessage, isTyping })
       <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 pb-40">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-800 px-4">
-            <div className="w-12 h-12 bg-white rounded-full border border-gray-200 flex items-center justify-center mb-4 shadow-sm">
-                <Box size={24} className="text-gray-600" />
+            <div className="w-16 h-16 bg-white rounded-none border border-gray-200 flex items-center justify-center mb-4 shadow-sm overflow-hidden">
+              {/* Hero image with fallback */}
+              <img
+                src="/bau_saber.png"
+                alt="Baú do Saber"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = 'none';
+                }}
+              />
+              <Box size={24} className="text-gray-600" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Professor 10: Questões ENADE</h2>
+            <h2 className="text-2xl font-bold mb-2">Baú do Saber</h2>
             <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
                 <Box size={14} />
-                <span>Por seninitec.bot</span>
+                <span>Grupo GSS</span>
             </div>
             <p className="text-gray-500 max-w-md text-center mb-12">
-                Gere e corrija questões no estilo ENADE, com rigor técnico e formato acadêmico.
+                Assistente inteligente do gestor  GSS
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl w-full">
                 {suggestionCards.map((card, idx) => (
-                    <button 
+                    <button
                         key={idx}
-                        onClick={() => setInput(card.text + " " + card.subtext)}
-                        className="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-left shadow-sm group"
+                        onClick={() => {
+                          // Se tiver rota, navega; senão, preenche o input como antes
+                          // @ts-expect-error route opcional
+                          if (card.route) navigate(card.route);
+                          else setInput(card.text + " " + card.subtext);
+                        }}
+                        className={cn(
+                          "p-4 border rounded-xl transition-colors text-left shadow-sm group",
+                          card.text === "Dashboard"
+                            ? "bg-emerald-50/50 border-emerald-200 hover:bg-emerald-100/60 active:bg-emerald-100 blink-green"
+                            : "bg-white border-gray-200 hover:bg-gray-50"
+                        )}
                     >
                         <p className="font-medium text-gray-800 group-hover:text-black">{card.text}</p>
                         <p className="text-gray-500 text-sm truncate">{card.subtext}</p>
@@ -240,9 +261,6 @@ export const Chat: React.FC<ChatProps> = ({ messages, onSendMessage, isTyping })
                        title={hasSpeechRecognition ? (isListening ? "Parar transcrição" : "Falar para transcrever") : "Navegador sem suporte a reconhecimento de voz"}
                      >
                         <Mic size={20} />
-                     </button>
-                     <button type="button" className="p-2 text-gray-500 hover:text-gray-700 transition-colors">
-                        <AudioWaveform size={20} />
                      </button>
                      {input.trim() && (
                         <button

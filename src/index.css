@@ -12,3 +12,17 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@keyframes blink-green {
+  0% { background-color: #ffffff; }
+  50% { background-color: rgba(16, 185, 129, 0.35); }
+  100% { background-color: #ffffff; }
+}
+
+.blink-green {
+  animation: blink-green 2s ease-in-out infinite;
+}
+
+.blink-green:hover {
+  animation-play-state: paused;
+}

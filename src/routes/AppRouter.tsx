@@ -4,6 +4,7 @@ import App from '../App';
 import LoginPage from '../pages/LoginPage';
 import ProtectedRoute from './ProtectedRoute';
 import RecoverPasswordPage from '../pages/RecoverPasswordPage';
+import DashboardPage from '../pages/DashboardPage';
 
 const AppRouter: React.FC = () => {
   return (
@@ -11,6 +12,14 @@ const AppRouter: React.FC = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/recuperar-senha" element={<RecoverPasswordPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/"
           element={

@@ -31,7 +31,7 @@ function App() {
       <main className="flex-1 flex flex-col h-full overflow-hidden relative">
         <Header 
           externalLink="https://openai.com/blog/chatgpt"
-          externalLinkText="OpenAI Blog"
+          externalLinkText="Acesso via Teams"
           isSidebarCollapsed={sidebarCollapsed}
           onToggleSidebar={toggleSidebar}
         />

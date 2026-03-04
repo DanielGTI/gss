@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
-import logo from '../assets/react.svg';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -29,8 +28,8 @@ const LoginPage: React.FC = () => {
       <div className="w-full max-w-md">
         <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-8">
           <div className="flex flex-col items-center mb-6">
-            <img src={logo} alt="Empresa" className="w-12 h-12 mb-2" />
-            <h1 className="text-xl font-semibold text-gray-900">Acesso ao Professor 10</h1>
+            <img src="/bau_saber.png" alt="Baú do Saber" className="w-16 h-16 mb-2 object-cover" />
+            <h1 className="text-xl font-semibold text-gray-900">Baú do Saber - Seu assistente de IA</h1>
             <p className="text-sm text-gray-500 mt-1">Entre com seu email corporativo</p>
           </div>
 
